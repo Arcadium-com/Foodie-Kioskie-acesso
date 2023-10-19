@@ -33,7 +33,7 @@ body {
 .title {
     display: flex;
     align-items: center;
-    background-color: #720d87;
+    background-color: #17caca;
     border-radius: 30px;
     width: 30rem;
     justify-content: center;
@@ -53,9 +53,9 @@ img{
 
 .continue-button button {
     margin-top: 1rem;
-    width: 100%;
+    width: 30rem;
     border: none;
-    background-color: #720d87;
+    background-color: #831185;
     padding: 0.62rem;
     border-radius: 5px;
     cursor: pointer;

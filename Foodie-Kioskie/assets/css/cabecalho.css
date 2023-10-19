@@ -29,11 +29,20 @@ body {
     align-items: center;
 }
 
+.img-logos-cab {
+    margin: 4rem;
+    width: 40%;
+}
+
 a {
     text-decoration: none;
 }
 
 @media screen and (max-width: 1330px) { 
+    .img-logos-cab {
+        width: 20%;
+    }
+
     .Cabecalho{
         justify-content: space-between;
     }
@@ -51,7 +60,7 @@ a {
 }
 
 
-@media screen and (max-width: 1330px){
+@media screen and (max-width: 1064px){
     .Cabecalho{
         justify-content: space-between;
         width: 100%;
@@ -69,5 +78,4 @@ a {
         display: none;
     }
 }
-
 
