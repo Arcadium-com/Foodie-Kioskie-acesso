@@ -62,7 +62,7 @@
 
                     <div class="input-box">
                         <label for="cep">CEP:</label>
-                        <input id="cep" type="text" name="cep" placeholder="00000-000" required>
+                        <input id="input_cep" type="text" name="cep" placeholder="00000-000" required onchange="showEndereco()">
                     </div>
 
                     <div class="input-box">
@@ -72,7 +72,7 @@
 
                     <div class="input-box">
                         <label for="logradouro">Logradouro:</label>
-                        <input id="logradouro" type="text" name="logradouro" placeholder="Digite logradouro da empresa" required>
+                        <input id="input_logradouro" type="text" name="logradouro" placeholder="Digite logradouro da empresa" required>
                     </div>
 
                     <div class="input-box">
@@ -87,7 +87,7 @@
 
                     <div class="input-box">
                         <label for="bairro">Bairro:</label>
-                        <input id="bairro" type="text" name="bairro" placeholder="Digite o bairro da empresa" required>
+                        <input id="input_bairro" type="text" name="bairro" placeholder="Digite o bairro da empresa" required>
                     </div>
 
                     <div class="input-box">
@@ -97,7 +97,7 @@
 
                     <div class="input-box">
                     <label for="cidade">Estado:</label>
-                    <select required id="estado">
+                    <select required id="select_estado">
                         <option value="" disabled selected>Estado</option>
                         <option value="1">Acre</option>
                         <option value="2">Alagoas</option>
@@ -132,7 +132,7 @@
                 </div>
 
                 <div class="continue-button">
-                    <button><a href="#">Cadastrar</a> </button>
+                    <button onclick="cadastrar()">Cadastrar</button>
                 </div>
             </div>
         </div>
@@ -161,3 +161,62 @@
 </body>
 
 </html>
+
+<script>
+   
+   var URL = 'https://viacep. .br/ws';
+
+   async function cadastrar() {
+        var empresa = {
+            nomeResponsavel: input_nome_resp.value,
+            nomeFantasia: input_empresa.value,
+            cnpj: input_cnpj.value,
+            tipo: input_segmento.value,
+            cep: input_cep.value,
+            logradouro: input_logradouro.value,
+            bairro: input_bairro.value,
+            cidade: input_cidade.value,
+            idEstado: input_estado.value,
+            tel: input_telefone.value,
+            email: input_email.value,
+            numero: input_numero.value,
+            complemento: input_complemento.value
+        };
+        if (empresa.nomeResponsavel == "" || empresa.nomeFantasia == "" || empresa.cnpj == "" || empresa.tipo == "" || empresa.cep == "" || empresa.logradouro == "" || empresa.bairro == "" || empresa.cidade == "" || empresa.idEstado == "" || empresa.tel == "" || empresa.email == "" || empresa.numero == "" || empresa.complemento == "") {
+            Swal.fire({
+                title: 'Campos em branco!',
+                icon: 'error',
+                timer: 3000, // Tempo de exibição do toast em milissegundos
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false
+            })
+        } else {
+            event.preventDefault();
+
+            fetch(`./empresas/cadastrar`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    empresa
+                })
+            }).then(() => console.log("Deu certo!"))
+    }
+
+    async function showEndereco() {
+        var cep = input_cep.value;
+        var endereco = await getEndereco(cep);
+        input_logradouro.value = endereco.logradouro;
+        input_cidade.value = endereco.localidade;
+        input_bairro.value = endereco.bairro;
+        input_estado.value = endereco.uf;
+    }
+
+    async function getEndereco(cep) {
+        var resposta = await fetch(`${URL}/${cep}/json`);
+        var json = await resposta.json();
+        return json;
+    }
+}
