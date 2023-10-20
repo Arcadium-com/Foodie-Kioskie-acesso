@@ -43,31 +43,31 @@
                 <div class="input-group">
                     <div class="input-box">
                         <label for="nomeResponsavel">Nome Responsável:</label>
-                        <input id="nomeResponsavel" type="text" name="nomeResponsavel" placeholder="Digite responsável pela empresa" required>
+                        <input id="input_nomeResponsavel" type="text" name="nomeResponsavel" placeholder="Digite responsável pela empresa" required>
                     </div>
 
                     <div class="input-box">
                         <label for="nomeFantasia">Nome Fantasia:</label>
-                        <input id="nomeFantasia" type="text" name="nomeFantasia" placeholder="Digite nome fanstasia" required>
+                        <input id="input_nomeFantasia" type="text" name="nomeFantasia" placeholder="Digite nome fanstasia" required>
                     </div>
                     <div class="input-box">
                         <label for="cnpj">CNPJ:</label>
-                        <input id="cnpj" type="text" name="cnpj" placeholder="00.000.000/0000-00" required>
+                        <input id="input_cnpj" type="text" name="cnpj" placeholder="00.000.000/0000-00" required>
                     </div>
 
                     <div class="input-box">
                         <label for="telefone">Telefone:</label>
-                        <input id="telefone" type="tel" name="telefone" placeholder="(00) 0000-0000" required>
+                        <input id="input_telefone" type="tel" name="telefone" placeholder="(00) 0000-0000" required>
                     </div>
 
                     <div class="input-box">
                         <label for="cep">CEP:</label>
-                        <input id="input_cep" type="text" name="cep" placeholder="00000-000" required onchange="showEndereco()">
+                        <input id="input_cep" type="number" name="cep" placeholder="00000-000" required onchange="showEndereco()">
                     </div>
 
                     <div class="input-box">
                         <label for="tipoLogradouro">Tipo do Logradouro:</label>
-                        <input id="tipoLogradouro" type="text" name="tipoLogradouro" placeholder="Digite tipo do logradouro" required>
+                        <input id="input_tipoLogradouro" type="text" name="tipoLogradouro" placeholder="Digite tipo do logradouro" required>
                     </div>
 
                     <div class="input-box">
@@ -77,12 +77,12 @@
 
                     <div class="input-box">
                         <label for="numeroLogradouro">Número Logradouro:</label>
-                        <input id="numeroLogradouro" type="text" name="numeroLogradouro" placeholder="Digite número logradouro" required>
+                        <input id="input_numeroLogradouro" type="text" name="numeroLogradouro" placeholder="Digite número logradouro" required>
                     </div>
                 
                     <div class="input-box">
                         <label for="complemento">Complemento:</label>
-                        <input id="complemento" type="text" name="complemento" placeholder="Digite complemento" required>
+                        <input id="input_complemento" type="text" name="complemento" placeholder="Digite complemento" required>
                     </div>
 
                     <div class="input-box">
@@ -92,12 +92,12 @@
 
                     <div class="input-box">
                         <label for="cidade">Cidade:</label>
-                        <input id="cidade" type="text" name="cidade" placeholder="Digite cidade da empresa" required>
+                        <input id="input_cidade" type="text" name="cidade" placeholder="Digite cidade da empresa" required>
                     </div>
 
                     <div class="input-box">
-                    <label for="cidade">Estado:</label>
-                    <select required id="select_estado">
+                    <label for="estado">Estado:</label>
+                    <select required id="input_estado">
                         <option value="" disabled selected>Estado</option>
                         <option value="1">Acre</option>
                         <option value="2">Alagoas</option>
@@ -164,12 +164,10 @@
 
 <script>
    
-   var URL = 'https://viacep. .br/ws';
-
    async function cadastrar() {
         var empresa = {
             nomeResponsavel: input_nome_resp.value,
-            nomeFantasia: input_empresa.value,
+            nomeFantasia: input_nomeFantasia.value,
             cnpj: input_cnpj.value,
             tipo: input_segmento.value,
             cep: input_cep.value,
@@ -204,14 +202,16 @@
                 })
             }).then(() => console.log("Deu certo!"))
     }
+}
 
-    async function showEndereco() {
+var URL = 'https://viacep.com.br/ws';
+async function showEndereco() {
         var cep = input_cep.value;
         var endereco = await getEndereco(cep);
         input_logradouro.value = endereco.logradouro;
         input_cidade.value = endereco.localidade;
         input_bairro.value = endereco.bairro;
-        input_estado.value = endereco.uf;
+        select_estado.value = endereco.uf;
     }
 
     async function getEndereco(cep) {
@@ -219,4 +219,6 @@
         var json = await resposta.json();
         return json;
     }
-}
+
+
+</script>
