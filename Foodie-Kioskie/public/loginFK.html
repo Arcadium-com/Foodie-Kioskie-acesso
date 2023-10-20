@@ -39,18 +39,18 @@
                 <div class="input-group">
                     <div class="input-box">
                         <label for="email">E-mail:</label>
-                        <input id="email" type="text" name="email" placeholder="Digite e-mail do usuário" required>
+                        <input id="input_email" type="text" name="email" placeholder="Digite e-mail do usuário" required>
                     </div>
 
                     <div class="input-box">
                         <label for="senha">Senha:</label>
-                        <input id="senha" type="password" name="senha" placeholder="Digite senha do usuário" required>
+                        <input id="input_senha" type="password" name="senha" placeholder="Digite senha do usuário" required>
                     </div>
 
                 </div>
 
                 <div class="continue-button">
-                    <button><a href="#">Entrar</a> </button>
+                    <button><a href="#">Entrar</a></button>
                 </div>
             </div>
         </div>
@@ -82,3 +82,47 @@
 </body>
 
 </html>
+
+<script>
+    function login() {
+        var email = input_email.value;
+        var senha = input_senha.value;
+        fetch("/usuarios/autenticar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                emailServer: email,
+                senhaServer: senha
+            })
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                resposta.json().then(json => {
+                    sessionStorage.EMAIL_USUARIO = json.email;
+                    sessionStorage.NOME_USUARIO = json.nome;
+                    sessionStorage.ID_USUARIO = json.id;
+                    sessionStorage.PERMISSAO = json.fkPermissao;
+                    window.location = 'dashboard/dashboard.html';
+                });
+
+            } else {
+                resposta.text().then(texto => {
+                    Swal.fire({
+                        title: 'E-mail e/ou senha inválidos',
+                        icon: 'error',
+                        timer: 3000, // Tempo de exibição do toast em milissegundos
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false
+                    })
+                });
+            }
+
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+
+        return false;
+    }
+</script>
